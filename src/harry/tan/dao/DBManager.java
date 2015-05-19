@@ -20,12 +20,12 @@ public class DBManager {
     /**
      * init the data,and cache data
      */
-    private static Set<Node> nodes;
+    private  Set<Node> nodes;
 
     /**
      * save the primary data
      */
-    private static int       array[][];
+    private  int       array[][];
 
     /**
      * remove duplicate
@@ -220,7 +220,7 @@ public class DBManager {
 
 
     public void setNodes(Set<Node> nodes) {
-        DBManager.nodes = nodes;
+        this.nodes = nodes;
     }
 
 

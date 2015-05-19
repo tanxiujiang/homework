@@ -46,7 +46,7 @@ public class CalcuateByCircular implements CalculateInter {
 
 
     @Override
-    public int calculate(final String startTown, final String endTown) {
+    public int calculate(final String startTown, final String endTown,final String...pOthers) {
         if (HomeWorkUtil.IsEmpty(startTown)) {
             throw new RuntimeException("the startTown is empty");
         }

@@ -3,13 +3,15 @@ package harry.tan.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.omg.CORBA.DynAnyPackage.Invalid;
+
 import harry.tan.dao.DBManager;
 import harry.tan.factory.DataFactory;
 import harry.tan.serviceInter.CalculateInter;
 import harry.tan.utils.HomeWorkConstant;
 import harry.tan.utils.HomeWorkUtil;
 
-public class CalcuateLeastStops implements CalculateInter {
+public class CalcuateStops implements CalculateInter {
 
     private DBManager    dbManager = null;
 
@@ -28,23 +30,20 @@ public class CalcuateLeastStops implements CalculateInter {
      */
     private String       tempPath  = "";
 
-    /**
-     * save a temporary weight
-     */
-    private int          weight    = 0;
+    private int matrixSize = 0;
+    
+    private int operator = 0;
+    
+    private int stops=0;
 
-    private int          startNode = 0;
-
-
-
-    public CalcuateLeastStops() {
+    public CalcuateStops() {
         this.dbManager = DataFactory.getDbManager();
     }
 
 
 
     @Override
-    public int calculate(String startTown, String endTown) {
+    public int calculate(final String startTown, final String endTown,final String...pOthers) {
         if (HomeWorkUtil.IsEmpty(startTown)) {
             throw new RuntimeException("the startTown is empty");
         }
@@ -53,28 +52,34 @@ public class CalcuateLeastStops implements CalculateInter {
             throw new RuntimeException("the startTown is empty");
         }
 
+        if(pOthers == null || pOthers.length < 2){
+        	throw new RuntimeException("the extra is error");
+        }
+        
         // letter turned into digital
-        this.startNode = (startTown.charAt(0) - 16) - 48;
+        final int startNode = (startTown.charAt(0) - 16) - 48;
 
         // letter turned into digital
         final int endNode = (endTown.charAt(0) - 16) - 48;
 
+        this.operator = (int)(pOthers[0].charAt(0));
+        
+        this.stops = Integer.valueOf(pOthers[1]);
+        
         // get the amount of letters
-        final int amount = dbManager.getLettersAmount();
+        this.matrixSize = dbManager.getLettersAmount();
 
-        dbManager.init(amount);
+        dbManager.init(this.matrixSize);
 
         this.array = dbManager.getArray();
 
-        // init a value
-        this.weight = this.array[this.startNode][endNode];
+        this.tempPath = startNode + HomeWorkConstant.GLOBAL_EMPTY;
 
-        this.tempPath = this.startNode + HomeWorkConstant.GLOBAL_EMPTY;
-
-        this.dfs(this.startNode, endNode, 0, amount);
+        this.dfs(startNode, endNode, this.tempPath);
 
         int result = this.getStops();
-
+        
+        System.out.println(this.routePath);
         // clear all data
         this.clear();
 
@@ -104,38 +109,35 @@ public class CalcuateLeastStops implements CalculateInter {
      * @param pNumber
      *            the size of the matrix(array[][])
      */
-    private void dfs(final int pCurrent, final int pEnd, final int pDis, final int pNumber) {
-
-        if ((pCurrent == pEnd) && (pDis != 0)) {
-            int len = this.tempPath.length();
-
-            StringBuffer routePath = new StringBuffer("");
-            for (int j = 0; j < len; j++) {
-                char letter = (char) (this.tempPath.charAt(j) + 16);
-                routePath.append(letter);
-            }
-
-            this.routePath.add(routePath.toString());
-        }
-
-        if ((pCurrent == pEnd && pDis > 0)) {
-            return;
-        }
-
-        for (int i = 1; i <= pNumber; i++) {
+    private void dfs(final int pCurrent, final int pEnd, String pTemp) {
+    	 
+//    	if(pTemp.length() > 4){
+    	if(pTemp.length() > 5){
+    		return;
+    	}
+//    	 if ((pCurrent == pEnd) && (pTemp.length() != 1)) {
+    	if ((pCurrent == pEnd) && (pTemp.length() == 5)) {
+             int len = pTemp.length();
+             StringBuffer routePath = new StringBuffer("");
+             for (int j = 0; j < len; j++) {
+                 char letter = (char) (pTemp.charAt(j) + 16);
+                 routePath.append(letter);
+             }
+             
+             this.routePath.add(routePath.toString());
+         }
+    	 
+        for (int i = 1; i <= matrixSize; i++) {
             if ((this.array[pCurrent][i] != HomeWorkConstant.INFO_PASS)
                     && (this.array[pCurrent][i] != HomeWorkConstant.INFO_ORIGIN)) {
-                if (( this.startNode != pEnd) && (pDis > 0) && (Math.abs(pCurrent - i) == 1) && (this.weight == this.array[pCurrent][i])) {
-                    continue;
-                }
-
-                this.weight = this.array[pCurrent][i];
-
-                // digital to digital character
-                char ch = (char) (48 + i);
-                this.tempPath += ch;
-                dfs(i, pEnd, pDis + this.array[pCurrent][i], pNumber);
-                this.tempPath = this.tempPath.substring(0, this.tempPath.length() - 1);
+            	pTemp+=i;
+//               if(pTemp.length() > 4){
+            	if(pTemp.length() > 5){
+            	   continue;
+               }
+                dfs(i, pEnd, pTemp);
+                
+                pTemp = pTemp.substring(0, pTemp.length() - 1);
             }
         }
     }
@@ -148,17 +150,7 @@ public class CalcuateLeastStops implements CalculateInter {
      * @return
      */
     private int getStops() {
-        int stopNumber = Integer.MAX_VALUE;
-        for (String route : this.routePath) {
-            if (route.length() < stopNumber) {
-                if (route.charAt(0) == route.charAt(route.length() - 1)) {
-                    stopNumber = route.length() - 1;
-                } else {
-                    stopNumber = route.length();
-                }
-            }
-        }
-        return stopNumber;
+        return this.routePath.size();
     }
 
 
@@ -170,7 +162,6 @@ public class CalcuateLeastStops implements CalculateInter {
     private void clear() {
         this.array = null;
         this.tempPath = "";
-        this.weight = 0;
         this.routePath = new ArrayList<String>();
     }
 }

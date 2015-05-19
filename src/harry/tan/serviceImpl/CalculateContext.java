@@ -19,15 +19,15 @@ public class CalculateContext {
 
 
 
-    public int calculateByCompletePath(final String completeRoute) {
+    public int calculateByCompletePath(final String pCompleteRoute) {
 
-        return this.calculateImpl.calculate(completeRoute);
+        return this.calculateImpl.calculate(pCompleteRoute);
     }
 
 
 
-    public int calculateBySpot(final String startTown, final String endTown) {
-        return this.calculateImpl.calculate(startTown, endTown);
+    public int calculateBySpot(final String pStartTown, final String pEndTown,final String...pOthers) {
+        return this.calculateImpl.calculate(pStartTown, pEndTown,pOthers);
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class Test0 {
+public class Test00 {
     
     /**
      * obj

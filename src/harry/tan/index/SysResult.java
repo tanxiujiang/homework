@@ -1,7 +1,7 @@
 package harry.tan.index;
 
 import harry.tan.serviceImpl.CalcuateByCircular;
-import harry.tan.serviceImpl.CalcuateLeastStops;
+import harry.tan.serviceImpl.CalcuateStops;
 import harry.tan.serviceImpl.CalcuateShortestRoute;
 import harry.tan.serviceImpl.CalculateByClearRoute;
 import harry.tan.serviceImpl.CalculateContext;
@@ -44,7 +44,7 @@ public class SysResult {
     public void runComputeStops() {
 
         // the first algorithm to solve the question 6-7
-        CalculateContext context = new CalculateContext(new CalcuateLeastStops());
+        CalculateContext context = new CalculateContext(new CalcuateStops());
 
         String[] data = new String[] { "C-C", "A-C" };
         for (int i = 0; i < data.length; i++) {

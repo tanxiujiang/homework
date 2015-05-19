@@ -15,7 +15,7 @@ public interface CalculateInter {
      * @param endTown
      * @return
      */
-    public int calculate(final String startTown, final String endTown);
+    public int calculate(final String pStartTown, final String pEndTown,final String...pOthers);
 
 
 
@@ -26,5 +26,5 @@ public interface CalculateInter {
      * @param completeRoute
      * @return
      */
-    public int calculate(final String completeRoute);
+    public int calculate(final String pCompleteRoute);
 }
