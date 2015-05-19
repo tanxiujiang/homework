@@ -14,7 +14,7 @@ public class Test02 {
         CalculateContext context = new CalculateContext(calculate);
 //        System.out.println(context.calculateBySpot("C", "C"));
 //        System.out.println(context.calculateBySpot("A", "C"));
-        System.out.println(context.calculateBySpot("A", "E"));
-//        System.out.println(context.calculateBySpot("A", "D"));
+//        System.out.println(context.calculateBySpot("A", "E"));
+        System.out.println(context.calculateBySpot("A", "D"));
     }
 }

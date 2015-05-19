@@ -15,4 +15,5 @@ public final class HomeWorkConstant {
     public final static String RESULT_COLON = ": ";
     public final static int    INFO_PASS    = -1;
     public final static int    INFO_ORIGIN  = 0;
+    public final static String GLOBAL_EMPTY = "";
 }

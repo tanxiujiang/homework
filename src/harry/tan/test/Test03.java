@@ -18,6 +18,7 @@ public class Test03 {
             int distance = context.calculateBySpot(d[0], d[1]);
             System.out.println(distance);
         }
+        
     }
     
 }

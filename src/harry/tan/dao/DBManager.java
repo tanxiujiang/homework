@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.management.RuntimeErrorException;
-
 /**
  * @description load proterties and create data structure
  * @author harrytan
@@ -33,6 +31,16 @@ public class DBManager {
      * remove duplicate
      */
     private List<String>     townContainer = new ArrayList<String>();
+
+    /**
+     * singleton(hungry type)
+     */
+    private static DBManager instance      = new DBManager();
+
+
+
+    private DBManager() {
+    }
 
 
 
@@ -71,6 +79,18 @@ public class DBManager {
     public int getLettersAmount() {
         this.init();
         return nodes.size();
+    }
+
+
+
+    /**
+     * 
+     * <method description> get current only a instance
+     * 
+     * @return
+     */
+    public static DBManager getInstance() {
+        return instance;
     }
 
 
@@ -177,11 +197,11 @@ public class DBManager {
                 }
             }
         }
-        
+
         if (nodes == null || nodes.size() < 1) {
             this.buildStructure();
         }
-        
+
         for (Node node : nodes) {
             int row = (node.getName().toCharArray()[0] - 16) - 48;
             for (Node child : node.getChild().keySet()) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import harry.tan.dao.DBManager;
+import harry.tan.factory.DataFactory;
 import harry.tan.serviceInter.CalculateInter;
 import harry.tan.utils.HomeWorkConstant;
 import harry.tan.utils.HomeWorkUtil;
@@ -39,7 +40,7 @@ public class CalcuateByCircular implements CalculateInter {
 
 
     public CalcuateByCircular() {
-        this.dbManager = new DBManager();
+        this.dbManager = DataFactory.getDbManager();
     }
 
 

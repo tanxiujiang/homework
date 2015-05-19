@@ -1,13 +1,14 @@
 package harry.tan.test;
 
 import harry.tan.dao.DBManager;
+import harry.tan.factory.DataFactory;
 import harry.tan.pojo.Node;
 
 import java.util.Set;
 
 import org.junit.Test;
 
-public class TestData {
+public class Test0 {
     
     /**
      * obj
@@ -16,7 +17,7 @@ public class TestData {
      */
     @Test
     public void buildStructureObj(){
-        DBManager dbManager = new DBManager();
+        DBManager dbManager = DataFactory.getDbManager();
         dbManager.init();
         Set<Node> nodes = dbManager.getNodes();
         for(Node node:nodes){
@@ -31,7 +32,7 @@ public class TestData {
      */
     @Test
     public void buildStructureArray(){
-        DBManager dbManager = new DBManager();
+        DBManager dbManager = DataFactory.getDbManager();
         dbManager.init(5);
         int[][]  data = dbManager.getArray();
         for(int i=0;i<data.length;i++){

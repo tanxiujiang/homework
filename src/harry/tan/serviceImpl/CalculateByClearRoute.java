@@ -3,6 +3,7 @@ package harry.tan.serviceImpl;
 import java.util.Set;
 
 import harry.tan.dao.DBManager;
+import harry.tan.factory.DataFactory;
 import harry.tan.pojo.Node;
 import harry.tan.serviceInter.CalculateInter;
 import harry.tan.utils.HomeWorkConstant;
@@ -20,7 +21,7 @@ public class CalculateByClearRoute implements CalculateInter {
 
 
     public CalculateByClearRoute() {
-        this.dbManager = new DBManager();
+        this.dbManager = DataFactory.getDbManager();
     }
 
 

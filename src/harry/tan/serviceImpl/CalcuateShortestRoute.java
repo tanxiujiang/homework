@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import harry.tan.dao.DBManager;
+import harry.tan.factory.DataFactory;
 import harry.tan.pojo.Node;
 import harry.tan.serviceInter.CalculateInter;
 import harry.tan.utils.HomeWorkUtil;
@@ -32,12 +33,18 @@ public class CalcuateShortestRoute implements CalculateInter {
      */
     private Map<String, String>  pathInfo  = new HashMap<String, String>();
 
-    DBManager                    dbManager = null;
+    /**
+     * if the startNode is equal endNode,the isSame is true,Or is false
+     */
+
+    private DBManager            dbManager = null;
+
+    private Node                 startNode = null;
 
 
 
     public CalcuateShortestRoute() {
-        dbManager = new DBManager();
+        dbManager = DataFactory.getDbManager();
     }
 
 
@@ -57,7 +64,7 @@ public class CalcuateShortestRoute implements CalculateInter {
         Set<Node> nodes = dbManager.getNodes();
         this.openNode.addAll(nodes);
 
-        Node startNode = null;
+        startNode = null;
         Node endNode = null;
 
         for (Node node : nodes) {
@@ -74,7 +81,7 @@ public class CalcuateShortestRoute implements CalculateInter {
             }
         }
 
-        if (startNode == null) {
+        if (this.startNode == null) {
             throw new RuntimeException("the startTown is not exist");
         }
 
@@ -82,8 +89,8 @@ public class CalcuateShortestRoute implements CalculateInter {
             throw new RuntimeException("the endTown is not exist");
         }
 
-        this.initPathInfo(startNode);
-        this.computeCore(startNode);
+        this.initPathInfo(this.startNode);
+        this.computeCore(this.startNode);
 
         int result = this.path.get(endTown) == null ? 0 : this.path.get(endTown);
         this.clear();
@@ -138,9 +145,12 @@ public class CalcuateShortestRoute implements CalculateInter {
 
         this.closeNode.add(childNode);
         this.openNode.remove(childNode);
+        
+
         Map<Node, Integer> childs = childNode.getChild();
         for (Node child : childs.keySet()) {
-            if (this.openNode.contains(child)) {
+            
+            if (this.openNode.contains(child) || child == this.startNode) {
                 Integer distanceTemp = this.path.get(childNode.getName()) + childs.get(child);
 
                 if (this.path.get(child.getName()) == null) {
