@@ -1,6 +1,6 @@
 package harry.tan.test;
 
-import harry.tan.serviceImpl.CalcuateStops;
+import harry.tan.serviceImpl.CalcuateStopsByMax;
 import harry.tan.serviceImpl.CalculateContext;
 import harry.tan.serviceInter.CalculateInter;
 
@@ -8,14 +8,17 @@ import org.junit.Test;
 
 public class Test02 {
 
+    // test 6
     @Test
-    public void testStops() {
-        CalculateInter calculate = new CalcuateStops();
+    public void testStopsByMax() {
+
+        CalculateInter calculate = new CalcuateStopsByMax(3);
         CalculateContext context = new CalculateContext(calculate);
-//        System.out.println(context.calculateBySpot("C", "C","<","4"));
-        System.out.println(context.calculateBySpot("A", "C","=","4"));
-//        System.out.println(context.calculateBySpot("A", "C"));
-//        System.out.println(context.calculateBySpot("A", "E"));
-//        System.out.println(context.calculateBySpot("A", "D"));
+        String testData[] = new String[] { "C-C","A-C","A-D" };
+        for (String data : testData) {
+            String d[] = data.split("-");
+            int distance = context.calculateBySpot(d[0], d[1]);
+            System.out.println(distance);
+        }
     }
 }

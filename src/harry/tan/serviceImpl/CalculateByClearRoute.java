@@ -27,7 +27,7 @@ public class CalculateByClearRoute implements CalculateInter {
 
 
     @Override
-    public int calculate(final String startTown, final String endTown,final String...pOthers) {
+    public int calculate(final String startTown, final String endTown) {
 
         return 0;
     }

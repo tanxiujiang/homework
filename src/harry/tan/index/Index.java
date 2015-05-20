@@ -17,8 +17,11 @@ public class Index {
         // 1-5
         sys.runByComputeByClearRoute();
 
-        // 6-7
-//        sys.runComputeStops();
+        // 6
+        sys.runComputeStopsByMax();
+
+        // 7
+        sys.runComputeStopsByMaxExactly();
 
         // 8-9
         sys.runComputeShortestRoute();

@@ -13,12 +13,25 @@ public class CalculateContext {
 
 
 
+    /**
+     * 
+     * @param the
+     *            class must implement CalculateInter
+     */
     public CalculateContext(CalculateInter calculateImpl) {
         this.calculateImpl = calculateImpl;
     }
 
 
 
+    /**
+     * 
+     * <method description>
+     * 
+     * @param pCompleteRoute
+     *            a complete route
+     * @return
+     */
     public int calculateByCompletePath(final String pCompleteRoute) {
 
         return this.calculateImpl.calculate(pCompleteRoute);
@@ -26,8 +39,18 @@ public class CalculateContext {
 
 
 
-    public int calculateBySpot(final String pStartTown, final String pEndTown,final String...pOthers) {
-        return this.calculateImpl.calculate(pStartTown, pEndTown,pOthers);
+    /**
+     * 
+     * <method description>
+     * 
+     * @param pStartTown
+     *            start node
+     * @param pEndTown
+     *            end node
+     * @return
+     */
+    public int calculateBySpot(final String pStartTown, final String pEndTown) {
+        return this.calculateImpl.calculate(pStartTown, pEndTown);
     }
 
 }

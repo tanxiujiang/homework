@@ -3,22 +3,20 @@ package harry.tan.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.omg.CORBA.DynAnyPackage.Invalid;
-
 import harry.tan.dao.DBManager;
 import harry.tan.factory.DataFactory;
 import harry.tan.serviceInter.CalculateInter;
 import harry.tan.utils.HomeWorkConstant;
 import harry.tan.utils.HomeWorkUtil;
 
-public class CalcuateStops implements CalculateInter {
+public class CalcuateStopsByMax implements CalculateInter {
 
-    private DBManager    dbManager = null;
+    private DBManager    dbManager  = null;
 
     /**
      * provide a container to save all routes
      */
-    private List<String> routePath = new ArrayList<String>();
+    private List<String> routePath  = new ArrayList<String>();
 
     /**
      * the base data
@@ -28,22 +26,32 @@ public class CalcuateStops implements CalculateInter {
     /**
      * provide a variable to save every temporary route
      */
-    private String       tempPath  = "";
+    private String       tempPath   = "";
 
-    private int matrixSize = 0;
-    
-    private int operator = 0;
-    
-    private int stops=0;
+    private int          matrixSize = 0;
 
-    public CalcuateStops() {
+    /**
+     * the maximum of stops
+     */
+    private int          maximum    = 0;
+
+
+
+    public CalcuateStopsByMax() {
         this.dbManager = DataFactory.getDbManager();
     }
 
 
 
+    public CalcuateStopsByMax(int pMaximum) {
+        this();
+        this.maximum = pMaximum + 1;
+    }
+
+
+
     @Override
-    public int calculate(final String startTown, final String endTown,final String...pOthers) {
+    public int calculate(final String startTown, final String endTown) {
         if (HomeWorkUtil.IsEmpty(startTown)) {
             throw new RuntimeException("the startTown is empty");
         }
@@ -52,20 +60,12 @@ public class CalcuateStops implements CalculateInter {
             throw new RuntimeException("the startTown is empty");
         }
 
-        if(pOthers == null || pOthers.length < 2){
-        	throw new RuntimeException("the extra is error");
-        }
-        
         // letter turned into digital
         final int startNode = (startTown.charAt(0) - 16) - 48;
 
         // letter turned into digital
         final int endNode = (endTown.charAt(0) - 16) - 48;
 
-        this.operator = (int)(pOthers[0].charAt(0));
-        
-        this.stops = Integer.valueOf(pOthers[1]);
-        
         // get the amount of letters
         this.matrixSize = dbManager.getLettersAmount();
 
@@ -78,9 +78,11 @@ public class CalcuateStops implements CalculateInter {
         this.dfs(startNode, endNode, this.tempPath);
 
         int result = this.getStops();
-        
-        System.out.println(this.routePath);
-        // clear all data
+
+        // Just debug,or delete the print info
+        // System.out.println(this.getRoutePath());
+
+        // clear all data for reuse the same class
         this.clear();
 
         return result;
@@ -109,35 +111,32 @@ public class CalcuateStops implements CalculateInter {
      * @param pNumber
      *            the size of the matrix(array[][])
      */
-    private void dfs(final int pCurrent, final int pEnd, String pTemp) {
-    	 
-//    	if(pTemp.length() > 4){
-    	if(pTemp.length() > 5){
-    		return;
-    	}
-//    	 if ((pCurrent == pEnd) && (pTemp.length() != 1)) {
-    	if ((pCurrent == pEnd) && (pTemp.length() == 5)) {
-             int len = pTemp.length();
-             StringBuffer routePath = new StringBuffer("");
-             for (int j = 0; j < len; j++) {
-                 char letter = (char) (pTemp.charAt(j) + 16);
-                 routePath.append(letter);
-             }
-             
-             this.routePath.add(routePath.toString());
-         }
-    	 
+    private void dfs(final int pCurrent, final int pEnd, final String pTemp) {
+
+        if (pTemp.length() > this.maximum) {
+            return;
+        }
+        if ((pCurrent == pEnd) && (pTemp.length() != 1)) {
+            int len = pTemp.length();
+            StringBuffer routePath = new StringBuffer("");
+            for (int j = 0; j < len; j++) {
+                char letter = (char) (pTemp.charAt(j) + 16);
+                routePath.append(letter);
+            }
+
+            this.routePath.add(routePath.toString());
+        }
+
         for (int i = 1; i <= matrixSize; i++) {
             if ((this.array[pCurrent][i] != HomeWorkConstant.INFO_PASS)
                     && (this.array[pCurrent][i] != HomeWorkConstant.INFO_ORIGIN)) {
-            	pTemp+=i;
-//               if(pTemp.length() > 4){
-            	if(pTemp.length() > 5){
-            	   continue;
-               }
-                dfs(i, pEnd, pTemp);
-                
-                pTemp = pTemp.substring(0, pTemp.length() - 1);
+                this.tempPath += i;
+                if (pTemp.length() > this.maximum) {
+                    continue;
+                }
+                dfs(i, pEnd, pTemp + i);
+
+                this.tempPath = this.tempPath.substring(0, this.tempPath.length() - 1);
             }
         }
     }
@@ -163,5 +162,17 @@ public class CalcuateStops implements CalculateInter {
         this.array = null;
         this.tempPath = "";
         this.routePath = new ArrayList<String>();
+    }
+
+
+
+    public List<String> getRoutePath() {
+        return routePath;
+    }
+
+
+
+    public void setRoutePath(List<String> pRoutePath) {
+        routePath = pRoutePath;
     }
 }

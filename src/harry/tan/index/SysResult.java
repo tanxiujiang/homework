@@ -1,11 +1,11 @@
 package harry.tan.index;
 
-import harry.tan.serviceImpl.CalcuateByCircular;
-import harry.tan.serviceImpl.CalcuateStops;
+import harry.tan.serviceImpl.CalcuateRoutesNumbers;
 import harry.tan.serviceImpl.CalcuateShortestRoute;
+import harry.tan.serviceImpl.CalcuateStopsByExactly;
+import harry.tan.serviceImpl.CalcuateStopsByMax;
 import harry.tan.serviceImpl.CalculateByClearRoute;
 import harry.tan.serviceImpl.CalculateContext;
-import harry.tan.serviceInter.CalculateInter;
 import harry.tan.utils.HomeWorkConstant;
 
 /**
@@ -17,7 +17,7 @@ import harry.tan.utils.HomeWorkConstant;
  */
 public class SysResult {
     /**
-     * 1-5
+     * test 1-5
      */
     public void runByComputeByClearRoute() {
 
@@ -38,15 +38,14 @@ public class SysResult {
 
 
     /**
-     * 
-     * <method description> 6-7
+     * test 6 <method description>
      */
-    public void runComputeStops() {
+    public void runComputeStopsByMax() {
 
-        // the first algorithm to solve the question 6-7
-        CalculateContext context = new CalculateContext(new CalcuateStops());
+        // the first algorithm to solve the question 6
+        CalculateContext context = new CalculateContext(new CalcuateStopsByMax(3));
 
-        String[] data = new String[] { "C-C", "A-C" };
+        String[] data = new String[] { "C-C" };
         for (int i = 0; i < data.length; i++) {
             String[] temp = data[i].split("-");
             int result = context.calculateBySpot(temp[0], temp[1]);
@@ -57,27 +56,43 @@ public class SysResult {
 
 
     /**
+     * test 7 <method description>
      * 
-     * <method description> 8-9
+     */
+    public void runComputeStopsByMaxExactly() {
+        CalculateContext context = new CalculateContext(new CalcuateStopsByExactly(4));
+        String[] data = new String[] { "A-C" };
+        for (int i = 0; i < data.length; i++) {
+            String[] temp = data[i].split("-");
+            int result = context.calculateBySpot(temp[0], temp[1]);
+            System.out.println(HomeWorkConstant.RESULT_OUT + (i + 7) + HomeWorkConstant.RESULT_COLON + result);
+        }
+    }
+
+
+
+    /**
+     * test 8-9 <method description>
      */
     public void runComputeShortestRoute() {
         CalculateContext context = new CalculateContext(new CalcuateShortestRoute());
-        String[] data = new String[] { "A-C", "B-B"};
+        String[] data = new String[] { "A-C", "B-B" };
         for (int i = 0; i < data.length; i++) {
             String[] temp = data[i].split("-");
             int result = context.calculateBySpot(temp[0], temp[1]);
             System.out.println(HomeWorkConstant.RESULT_OUT + (i + 8) + HomeWorkConstant.RESULT_COLON + result);
         }
     }
-    
+
+
+
     /**
-     * 10
-    * <method description>
-    *
+     * test 10 <method description>
+     * 
      */
-    public void runComputeRoutesNumbersByCircular(){
-        CalculateContext context = new CalculateContext(new CalcuateByCircular());
-        String[] data = new String[]{"C-C"};
+    public void runComputeRoutesNumbersByCircular() {
+        CalculateContext context = new CalculateContext(new CalcuateRoutesNumbers());
+        String[] data = new String[] { "C-C" };
         for (int i = 0; i < data.length; i++) {
             String[] temp = data[i].split("-");
             int result = context.calculateBySpot(temp[0], temp[1]);

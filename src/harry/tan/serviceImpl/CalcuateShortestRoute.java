@@ -50,7 +50,7 @@ public class CalcuateShortestRoute implements CalculateInter {
 
 
     @Override
-    public int calculate(final String startTown, final String endTown,final String...pOthers) {
+    public int calculate(final String startTown, final String endTown) {
         if (HomeWorkUtil.IsEmpty(startTown)) {
             throw new RuntimeException("startTown is empty");
         }

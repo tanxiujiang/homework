@@ -15,7 +15,7 @@ public interface CalculateInter {
      * @param endTown
      * @return
      */
-    public int calculate(final String pStartTown, final String pEndTown,final String...pOthers);
+    public int calculate(final String pStartTown, final String pEndTown);
 
 
 

@@ -16,7 +16,7 @@ public class Test01 {
         CalculateInter calculate = new CalculateByClearRoute();
 
         CalculateContext context = new CalculateContext(calculate);
-        String[] testData = new String[] { "A-E", "A-C", "C-D-C", "A-B-C-D-E-B-C" };
+        String[] testData = new String[] { "A-E", "A-C", "C-D-C", "A-B-C-D-E-B-C","A-B-C-D-E-B-C-A" };
         for (String path : testData) {
             int distance = context.calculateByCompletePath(path);
             String result = distance > 0 ? distance + "" : HomeWorkConstant.RESULT_INFO;

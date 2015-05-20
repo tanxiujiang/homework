@@ -20,22 +20,22 @@ public class DBManager {
     /**
      * init the data,and cache data
      */
-    private  Set<Node> nodes;
+    private Set<Node>              nodes;
 
     /**
      * save the primary data
      */
-    private  int       array[][];
+    private int                    array[][];
 
     /**
      * remove duplicate
      */
-    private List<String>     townContainer = new ArrayList<String>();
+    private List<String>           townContainer = new ArrayList<String>();
 
     /**
      * singleton(hungry type)
      */
-    private static DBManager instance      = new DBManager();
+    private final static DBManager instance      = new DBManager();
 
 
 

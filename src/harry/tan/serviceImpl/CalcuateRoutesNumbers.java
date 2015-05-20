@@ -9,7 +9,7 @@ import harry.tan.serviceInter.CalculateInter;
 import harry.tan.utils.HomeWorkConstant;
 import harry.tan.utils.HomeWorkUtil;
 
-public class CalcuateByCircular implements CalculateInter {
+public class CalcuateRoutesNumbers implements CalculateInter {
 
     private DBManager    dbManager = null;
 
@@ -39,14 +39,14 @@ public class CalcuateByCircular implements CalculateInter {
 
 
 
-    public CalcuateByCircular() {
+    public CalcuateRoutesNumbers() {
         this.dbManager = DataFactory.getDbManager();
     }
 
 
 
     @Override
-    public int calculate(final String startTown, final String endTown,final String...pOthers) {
+    public int calculate(final String startTown, final String endTown) {
         if (HomeWorkUtil.IsEmpty(startTown)) {
             throw new RuntimeException("the startTown is empty");
         }
@@ -69,6 +69,11 @@ public class CalcuateByCircular implements CalculateInter {
         this.dfs(statNode, 0);
 
         int result = this.routePath.size();
+
+        // just debug or delete the code
+        // System.out.println(this.routePath);
+
+        // init the data just for reuse the same class
         this.clear();
         return result;
     }
@@ -126,5 +131,17 @@ public class CalcuateByCircular implements CalculateInter {
         this.array = null;
         this.tempPath = "";
         this.amount = 0;
+    }
+
+
+
+    public List<String> getRoutePath() {
+        return routePath;
+    }
+
+
+
+    public void setRoutePath(List<String> pRoutePath) {
+        routePath = pRoutePath;
     }
 }
