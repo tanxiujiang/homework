@@ -59,24 +59,24 @@ public class CalcuateShortestRoute implements CalculateInter {
             throw new RuntimeException("endTown is empty");
         }
 
-        dbManager.init();
+        this.dbManager.init();
 
         Set<Node> nodes = dbManager.getNodes();
         this.openNode.addAll(nodes);
 
-        startNode = null;
+        this.startNode = null;
         Node endNode = null;
 
         for (Node node : nodes) {
             if (node.getName().equals(startTown)) {
-                startNode = node;
+                this.startNode = node;
             }
 
             if (node.getName().equals(endTown)) {
                 endNode = node;
             }
 
-            if (startNode != null && endNode != null) {
+            if (this.startNode != null && endNode != null) {
                 break;
             }
         }
@@ -145,11 +145,10 @@ public class CalcuateShortestRoute implements CalculateInter {
 
         this.closeNode.add(childNode);
         this.openNode.remove(childNode);
-        
 
         Map<Node, Integer> childs = childNode.getChild();
         for (Node child : childs.keySet()) {
-            
+
             if (this.openNode.contains(child) || child == this.startNode) {
                 Integer distanceTemp = this.path.get(childNode.getName()) + childs.get(child);
 
