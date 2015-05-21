@@ -113,7 +113,7 @@ public class CalcuateRoutesNumbers implements CalculateInter {
         for (int i = 1; i <= this.amount; i++) {
             if ((this.array[pCurrent][i] != HomeWorkConstant.INFO_PASS)
                     && (this.array[pCurrent][i] != HomeWorkConstant.INFO_ORIGIN)) {
-                if (pDis + this.array[pCurrent][i] > 30) {
+                if (pDis + this.array[pCurrent][i] >= this.weightSum) {
                     continue;
                 }
                 char ch = (char) (48 + i);
